@@ -41,13 +41,13 @@ const Form = styled.form`
 `;
 
 const Search = () => {
-  const ip = useForm('ip');
+  const ip = useForm(true);
   const { request } = useSearch();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (ip.validate()) {
-      request(ip.value);
+      request(ip.dataType(), ip.value);
     }
   };
 

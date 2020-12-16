@@ -7,15 +7,14 @@ const useSearch = () => {
   const [loading, setLoading] = useState(null);
 
   const request = useCallback(
-    async (value) => {
+    async (type, value) => {
       try {
         setLoading(true);
-        const response = await fetch(GET_GEO_IP(value));
+        const response = await fetch(GET_GEO_IP(type, value));
         const json = await response.json();
         setInfo(json);
-        console.log('requisição feita');
       } catch (e) {
-        console.log('Um erro ocorreu: ' + e);
+        console.log('Error: ' + e);
       } finally {
         setLoading(false);
       }

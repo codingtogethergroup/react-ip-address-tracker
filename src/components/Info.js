@@ -34,8 +34,7 @@ const Info = () => {
     const getIP = async () => {
       const response = await fetch(GET_IP_URL);
       const { ip } = await response.json();
-      console.log('useEffect: ' + ip);
-      request(ip);
+      request('ip', ip);
     };
     getIP();
   }, [request]);

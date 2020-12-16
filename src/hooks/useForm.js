@@ -4,8 +4,11 @@ import { ErrorContext } from '../contexts/ErrorContext';
 const types = {
   ip: {
     regex: /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/,
-    message: 'Enter a valid IP address',
   },
+  domain: {
+    regex: /^(?!:\/\/)([a-zA-Z0-9-_]+\.)*[a-zA-Z0-9][a-zA-Z0-9-_]+\.[a-zA-Z]{2,11}?$/,
+  },
+  message: 'Enter a valid domain or IP address',
 };
 
 const useForm = (type) => {
@@ -17,13 +20,23 @@ const useForm = (type) => {
     if (!value.length) {
       setError('The field cannot be empty');
       return false;
-    } else if (types[type] && !types[type].regex.test(value)) {
-      setError(types[type].message);
+    } else if (
+      types.ip &&
+      !types.ip.regex.test(value) &&
+      types.domain &&
+      !types.domain.regex.test(value)
+    ) {
+      setError(types.message);
       return false;
     } else {
       setError(false);
       return true;
     }
+  };
+
+  const dataType = (value) => {
+    if (types.ip.regex.test(value)) return 'ip';
+    else if (types.domain.regex.test(value)) return 'domain';
   };
 
   const onChange = ({ target }) => {
@@ -37,6 +50,7 @@ const useForm = (type) => {
     onChange,
     validate: () => validate(value),
     onBlur: () => validate(value),
+    dataType: () => dataType(value),
   };
 };
 
